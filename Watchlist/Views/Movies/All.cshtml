@@ -11,11 +11,9 @@
 			<img class="card-img-top" style="width: 18rem;"
 			 src="@movie.ImageUrl" alt="Book Image">
 			<div class="card-body">
-
 				<h5 class="card-title mt-1">@movie.Title</h5>
 				<p class="mb-0">Director: @movie.Director</p>
 				<p class="mb-0">Rating: @movie.Rating</p>
-
 				<p>
 					Genre:
 					@if (movie.ImdbGanres == null)
@@ -26,7 +24,6 @@
 					{
 						@movie.ImdbGanres
 					}
-
 				</p>
 			</div>
 
