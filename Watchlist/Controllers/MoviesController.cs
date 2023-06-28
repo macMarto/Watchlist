@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Watchlist.Contracts;
+using Watchlist.Data.Models;
 using Watchlist.Models;
 
 namespace Watchlist.Controllers
@@ -24,15 +25,15 @@ namespace Watchlist.Controllers
             return View(model);
         }
 
-		[HttpGet]
-		public async Task<IActionResult> AddFromImdb(string movieName)
-		{
+        [HttpGet]
+        public async Task<IActionResult> AddFromImdb(string movieName)
+        {
             var model = new AddFromImdbVewModel()
             {
                 Title = movieName
             };
-			return View(model);
-		}
+            return View(model);
+        }
         [HttpPost]
         public async Task<IActionResult> AddFromImdb(AddFromImdbVewModel model)
         {
@@ -54,7 +55,7 @@ namespace Watchlist.Controllers
                 return View(model);
             }
         }
-		[HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Add()
         {
             var model = new AddMovieViewModel()
@@ -84,7 +85,7 @@ namespace Watchlist.Controllers
 
                 return View(model);
             }
-        }     
+        }
         public async Task<IActionResult> AddToCollection(int movieId)
         {
             try
@@ -114,6 +115,52 @@ namespace Watchlist.Controllers
             await movieService.RemoveMovieFromCollectionAsync(movieId, userId);
 
             return RedirectToAction(nameof(Watched));
+        }
+
+        public async Task<IActionResult> RemoveMovie(int movieId)
+        {
+            await movieService.RemoveMovieAsync(movieId);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int movieId)
+        {
+            var movie = await movieService.GetMovieById(movieId);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            EditViewModel editViewModel = new EditViewModel()
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Director = movie.Director,
+                Rating = movie.Rating,
+                GanreName= movie.GanreName,
+            };
+
+            return View(editViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            try
+            {
+                await movieService.EditMovie(model);
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GSF/8mVMMGXvrCGL5zFVtLPw7XS1ig5fEukRUoS1Su/vJiR5dRMUjfGBwLUmKjQf+2lGF1yOf13Uc4f9ZUwArg==",
+  "dgSpecHash": "jait6je732dgT7yGcpW5iOY+A2h46h6q6EDvW68QyP2CyaP5fhtWAhSP9qDvLEyglMti2eFH/nva4YF14UBYbA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mati&hisi\\Desktop\\WORK\\Watchlist\\Watchlist\\Watchlist.csproj",
+  "projectFilePath": "C:\\Users\\mati&hisi\\Desktop\\Watchlist\\Watchlist\\Watchlist.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mati&hisi\\.nuget\\packages\\htmlagilitypack\\1.11.48\\htmlagilitypack.1.11.48.nupkg.sha512",
     "C:\\Users\\mati&hisi\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

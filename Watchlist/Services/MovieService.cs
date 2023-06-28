@@ -113,7 +113,7 @@ namespace Watchlist.Services
                     Movie = movie,
                     User = user
                 });
-
+                movie.IsAddedToMineCollection = true;
                 await context.SaveChangesAsync();
             }
         }
@@ -127,13 +127,15 @@ namespace Watchlist.Services
             return entities
                 .Select(m => new MovieViewModel()
                 {
+                    Id = m.Id,
                     Director = m.Director,
                     Genre = m?.Genre?.Name,
                     ImdbGanres = m?.GanreName,
-                    Id = m.Id,
                     ImageUrl = m.ImageUrl,
                     Rating = m.Rating,
-                    Title = m.Title
+                    Title = m.Title,
+                    IsRemoved = m.IsRemoved,
+                    IsAddedToMineCollection = m.IsAddedToMineCollection,
                 });
         }
 
@@ -166,6 +168,8 @@ namespace Watchlist.Services
                     ImageUrl = m.Movie.ImageUrl,
                     Title = m.Movie.Title,
                     Rating = m.Movie.Rating,
+                    IsRemoved = m.Movie.IsRemoved,
+                    IsAddedToMineCollection = m.Movie.IsAddedToMineCollection,
                 });
         }
 
@@ -182,12 +186,57 @@ namespace Watchlist.Services
             }
 
             var movie = user.UsersMovies.FirstOrDefault(m => m.MovieId == movieId);
+            var movieToReturnFromCollection = context.Movies.FirstOrDefault(x => x.Id == movieId);
 
             if (movie != null)
             {
+                movieToReturnFromCollection.IsAddedToMineCollection = false;
                 user.UsersMovies.Remove(movie);
-
                 await context.SaveChangesAsync();
+            }
+        }
+        public async Task RemoveMovieAsync(int movieId)
+        {
+            var movie = await context.Movies
+                .Where(m => m.Id == movieId)
+                .FirstOrDefaultAsync();
+
+            if (movie == null)
+            {
+                throw new ArgumentException("Invalid moive ID");
+            }
+            if (movie != null)
+            {
+                movie.IsRemoved = true;
+                await context.SaveChangesAsync();
+            }
+        }
+        public async Task<Movie> GetMovieById(int movieId)
+        {
+            var movie = await context.Movies
+                .Where(m => m.Id == movieId)
+                .FirstOrDefaultAsync();
+
+            return movie;
+        }
+        public async Task EditMovie(EditViewModel model)
+        {
+            var movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == model.Id);
+            if (movie == null)
+            {
+                throw new ArgumentException("Invalid movie ID");
+            }
+            if (movie != null)
+            {
+                movie.Title = model.Title;
+                movie.Director = model.Director;
+                movie.Rating = model.Rating;
+                movie.GanreName = model.GanreName;
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid movie ID");
             }
         }
     }

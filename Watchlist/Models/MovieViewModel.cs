@@ -17,5 +17,9 @@ namespace Watchlist.Models
         public string? Genre { get; set; }
 
         public string? ImdbGanres { get; set; }
+
+        public bool IsRemoved  { get; set; }
+
+        public bool IsAddedToMineCollection { get; set; }
     }
 }

@@ -30,5 +30,11 @@ namespace Watchlist.Data.Models
         public Genre? Genre { get; set; }
 
         public List<UserMovie> UsersMovies { get; set; } = new List<UserMovie>();
+
+        [Required]
+        public bool IsRemoved { get; set; } = false;
+
+        [Required]
+        public bool IsAddedToMineCollection { get; set; } = false;
     }
 }
